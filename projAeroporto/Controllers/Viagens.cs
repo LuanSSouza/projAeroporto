@@ -9,18 +9,18 @@ namespace projAeroporto.Controllers
 {
     class Viagens
     {
-        private Queue<Viagem> viagens;
+        private Queue<Viagem> queueViagens;
 
         public Viagens()
         {
-            this.viagens = new Queue<Viagem>();
+            this.queueViagens = new Queue<Viagem>();
         }
 
-        public Queue<Viagem> queueViagens { get { return viagens; } }
+        public Queue<Viagem> QueueViagens { get { return queueViagens; } }
 
         public void incluir(Viagem viagem)
         {
-            viagens.Enqueue(viagem);
+            queueViagens.Enqueue(viagem);
         }
     }
 }

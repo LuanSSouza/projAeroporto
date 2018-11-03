@@ -9,18 +9,22 @@ namespace projAeroporto.Controllers
 {
     class Garagens
     {
-        private List<Garagem> garagens;
+        private List<Garagem> listGaragens;
 
         public Garagens()
         {
-            this.garagens = new List<Garagem>();
+            this.listGaragens = new List<Garagem>();
         }
 
-        public List<Garagem> lisGaragens { get { return garagens; } }
+        public List<Garagem> ListGaragens { get { return listGaragens; } }
 
         public void incluir(Garagem garagem)
         {
-            garagens.Add(garagem);
+            listGaragens.Add(garagem);
+        }
+
+        public Garagem pesquisar(int id) {
+            return listGaragens.FirstOrDefault(g => g.Id == id);
         }
     }
 }

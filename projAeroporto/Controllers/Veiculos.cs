@@ -9,18 +9,18 @@ namespace projAeroporto.Controllers
 {
     public class Veiculos
     {
-        private List<Veiculo> veiculos;
+        private List<Veiculo> listVeiculos;
 
         public Veiculos()
         {
-            this.veiculos = new List<Veiculo>();
+            this.listVeiculos = new List<Veiculo>();
         }
 
-        public List<Veiculo> listVeiculos { get { return veiculos; } }
+        public List<Veiculo> ListVeiculos { get { return listVeiculos; } }
 
         public void incluir(Veiculo veiculo)
         {
-            veiculos.Add(veiculo);
+            listVeiculos.Add(veiculo);
         }
     }
 }

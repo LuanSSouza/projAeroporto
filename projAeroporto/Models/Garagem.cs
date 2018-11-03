@@ -31,5 +31,10 @@ namespace projAeroporto.Models
             foreach (Veiculo veiculo in veiculos)potencial += veiculo.Lotacao;
             return potencial;
         }
+
+        public void adicionarVeiculo(Veiculo veiculo)
+        {
+            veiculos.Push(veiculo);
+        }
     }
 }
