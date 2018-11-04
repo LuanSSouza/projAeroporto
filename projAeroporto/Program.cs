@@ -20,6 +20,7 @@ namespace projAeroporto
             string op = "";
 
             do {
+                Console.Clear();
                 op = menu();
 
             } while (op != "0");
@@ -92,7 +93,57 @@ namespace projAeroporto
             int idDestino = Int32.Parse(Console.ReadLine());
             Garagem destino = garagens.pesquisar(idDestino);
 
-            viagens.incluir(new Viagem(id, origem, destino, origem.Veiculos.Pop()));
+            Veiculo veiculo = origem.Veiculos.Pop();
+            destino.Veiculos.Push(veiculo);
+            viagens.incluir(new Viagem(id, origem, destino, veiculo));
+        }
+
+        static void listarVeiculosGaragem() {
+            Console.Write("Digite o ID da garagem: ");
+            int id = Int32.Parse(Console.ReadLine());
+            Garagem garagem = garagens.pesquisar(id);
+            Console.WriteLine("Quantidade de veículos: " + garagem.Veiculos.Count);
+            int potencial = 0;
+            garagem.Veiculos.ToList().ForEach(v => potencial += v.Lotacao);
+            Console.WriteLine("Potencial de transporte: " + potencial);
+        }
+
+        static void qtdeViagensEfetuadas() {
+            Console.WriteLine("Digite o ID de origem: ");
+            int idOrigem = Int32.Parse(Console.ReadLine());
+            Garagem origem = garagens.pesquisar(idOrigem);
+
+            Console.Write("Digite o ID de destino: ");
+            int idDestino = Int32.Parse(Console.ReadLine());
+            Garagem destino = garagens.pesquisar(idDestino);
+
+            int qtde = 0;
+            viagens.QueueViagens.ToList().ForEach(v => {
+                if (v.Origem.Equals(origem) && v.Destino.Equals(destino)) qtde++;
+            });
+            Console.WriteLine("Quantidade de viagens efetuadas de {0} para {1}: {2}", origem.Local, destino.Local, qtde);
+        }
+
+        static void listarViagensEfetuadas()
+        {
+            Console.WriteLine("Digite o ID de origem: ");
+            int idOrigem = Int32.Parse(Console.ReadLine());
+            Garagem origem = garagens.pesquisar(idOrigem);
+
+            Console.Write("Digite o ID de destino: ");
+            int idDestino = Int32.Parse(Console.ReadLine());
+            Garagem destino = garagens.pesquisar(idDestino);
+            
+            viagens.QueueViagens.ToList().ForEach(v => {
+                if (v.Origem.Equals(origem) && v.Destino.Equals(destino)) {
+                    Console.WriteLine("-------------------------------");
+                    Console.WriteLine("Id: " + v.Id);
+                    Console.WriteLine("Origem: {0} - {1}", v.Origem.Id, v.Origem.Local);
+                    Console.WriteLine("Destino: {0} - {1}", v.Destino.Id, v.Destino.Local);
+                    Console.WriteLine("Veículo: {0} - {1} - {2}", v.Veiculo.Id, v.Veiculo.Placa, v.Veiculo.Lotacao);
+                }
+            });
+            
         }
     }
 }

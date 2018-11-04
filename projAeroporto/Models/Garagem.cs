@@ -36,5 +36,12 @@ namespace projAeroporto.Models
         {
             veiculos.Push(veiculo);
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() != this.GetType()) return false;
+            Garagem garagem = (Garagem)obj;
+            return this.id == garagem.id;
+        }
     }
 }
