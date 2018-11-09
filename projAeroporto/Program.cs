@@ -13,6 +13,7 @@ namespace projAeroporto
         static Veiculos veiculos = new Veiculos();
         static Garagens garagens = new Garagens();
         static Viagens viagens = new Viagens();
+        static List<Transporte> transportes = new List<Transporte>();
         static bool emJornada = false;
 
         static void Main(string[] args)
@@ -22,7 +23,18 @@ namespace projAeroporto
             do {
                 Console.Clear();
                 op = menu();
-
+                switch (op) {
+                    case "0": break;
+                    case "1": cadastrarVeiculo(); break;
+                    case "2": cadastrarGaragem(); break;
+                    case "3": iniciarJornada(); break;
+                    case "4": encerrarJornada(); break;
+                    case "5": liberarViagem(); break;
+                    case "6": listarVeiculosGaragem(); break;
+                    case "7": qtdeViagensEfetuadas(); break;
+                    case "8": listarViagensEfetuadas(); break;
+                    case "9": informarPassageiro(); break;
+                }
             } while (op != "0");
         }
 
@@ -74,11 +86,18 @@ namespace projAeroporto
         static void iniciarJornada() {
             int i = 0;
             foreach (Veiculo veiculo in veiculos.ListVeiculos) {
-                garagens.ListGaragens[i].adicionarVeiculo(veiculo);
+                if(i < garagens.ListGaragens.Count) garagens.ListGaragens[i].adicionarVeiculo(veiculo);
                 if (i == garagens.ListGaragens.Count) i = 0;
                 else i++;
             }
             emJornada = true;
+        }
+
+        static void encerrarJornada() {
+            for (int i = 0; i < viagens.QueueViagens.Count; i++) {
+                Viagem viagem = viagens.QueueViagens.Dequeue();
+                transportes.Add(new Transporte(viagem.Veiculo, viagem.Veiculo.Lotacao));
+            }
         }
 
         static void liberarViagem() {
@@ -106,6 +125,7 @@ namespace projAeroporto
             int potencial = 0;
             garagem.Veiculos.ToList().ForEach(v => potencial += v.Lotacao);
             Console.WriteLine("Potencial de transporte: " + potencial);
+            Console.ReadKey();
         }
 
         static void qtdeViagensEfetuadas() {
@@ -122,6 +142,7 @@ namespace projAeroporto
                 if (v.Origem.Equals(origem) && v.Destino.Equals(destino)) qtde++;
             });
             Console.WriteLine("Quantidade de viagens efetuadas de {0} para {1}: {2}", origem.Local, destino.Local, qtde);
+            Console.ReadKey();
         }
 
         static void listarViagensEfetuadas()
@@ -143,7 +164,27 @@ namespace projAeroporto
                     Console.WriteLine("Veículo: {0} - {1} - {2}", v.Veiculo.Id, v.Veiculo.Placa, v.Veiculo.Lotacao);
                 }
             });
-            
+            Console.ReadKey();
+        }
+
+        static void informarPassageiro() {
+            Console.WriteLine("Digite o ID de origem: ");
+            int idOrigem = Int32.Parse(Console.ReadLine());
+            Garagem origem = garagens.pesquisar(idOrigem);
+
+            Console.Write("Digite o ID de destino: ");
+            int idDestino = Int32.Parse(Console.ReadLine());
+            Garagem destino = garagens.pesquisar(idDestino);
+
+            int qtd = 0;
+            viagens.QueueViagens.ToList().ForEach(v => {
+                if (v.Origem.Equals(origem) && v.Destino.Equals(destino))
+                {
+                    qtd += v.Veiculo.Lotacao;                   
+                }
+            });
+            Console.WriteLine("Quantidade: " + qtd);
+            Console.ReadKey();
         }
     }
 }
